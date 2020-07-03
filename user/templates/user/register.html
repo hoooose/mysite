@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{#页面标题#}
+{% block title %}
+    我的网站|注册
+{% endblock %}
+
+
+{#是否选中#}
+{% block nav_home_active %}
+    active
+{% endblock %}
+
+{#页面内容#}
+{% block content %}
+    
+<div class="container">
+    <div class="row">
+        <div class="col-xs-4 col-xs-offset-4">
+            {% if not user.is_authenticated %}
+                <div class="panel panel-default">
+                    <div class="panel-heading">注册</div>
+                    <div class="panel-body">
+                        <form action=" " method='POST'>
+                            {% csrf_token %}
+                            {% for field in register_form %}
+                                <label for='{{ field.id_label }}'>{{ field.label }}</label>
+                                {{ field }}
+                                <p class="text-danger">{{ field.errors.as_text }} </p>
+                            {% endfor %}
+                            <sapn class="pull-left text-danger"> {{ register_form.non_field_errors }} </sapn>
+                            <input type="submit" value="注册" class="btn btn-primary pull-right">
+                        </form>
+                    </div>
+                </div>
+            {% else %}
+                <span>已经登录,3s后跳转到<a href="{% url 'home' %} ">首页</a>...</span>
+                <script>
+                    setTimeout('to_home()',3000);
+                    function to_home(){
+                        window.location.replace("{% url 'home' %}");
+                    };
+                </script>
+            {% endif %}
+        </div>
+    </div>   
+</div>
+
+{% endblock %}

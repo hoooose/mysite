@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{#页面标题#}
+{% block title %}
+    {{ page_title }}
+{% endblock %}
+
+
+{#是否选中#}
+{% block nav_home_active %}
+    active
+{% endblock %}
+
+{#页面内容#}
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-xs-4 col-xs-offset-4">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    {{ form_title }}
+                </div>
+                <div class="panel-body">
+                    <form action="" method='POST'>
+                        {% for field in form %}
+                        {% csrf_token %}
+                            {% if not feild.is_hidden %}
+                                <label for='{{ field.id_label }}'>{{ field.label }}</label>
+                            {% endif %}
+                            {{ field }}
+                            <p class="text-danger">{{ field.errors.as_text }} </p>
+                        {% endfor %}
+                        <span class="text-danger"> {{ form.non_field_errors.as_text }} </span>
+                        <div>
+                            {% block button%}{% endblock %}
+                            <div class="pull-right">
+                                <input type="submit" value="{{ submit_text }}" class="btn btn-primary">
+                                <button class="btn btn-danger" onclick="window.location.href='{{ return_back_url }}'">返回</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>   
+</div>
+{% endblock %}
+
+{% block script_extends %}{% endblock %}

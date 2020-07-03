@@ -1,0 +1,87 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{#页面标题#}
+{% block title %}
+    我的网站|首页
+{% endblock %}
+
+{% block header_extend %}
+    <link rel="stylesheet" type="text/css" href="{% static 'home.css' %}">
+    <script src="http://cdn.highcharts.com.cn/highcharts/highcharts.js"></script>
+{% endblock %}
+
+{#是否选中#}
+{% block nav_home_active %}
+    active
+{% endblock %}
+
+{#页面内容#}
+{% block content %}
+    <h3 class='home-context''>欢迎访问</h3> 
+    
+    <!-- 图表容器 DOM -->
+    <div id="container"></div>
+        <script>
+            // 图表配置
+            var options = {
+                chart: {type: 'line'},
+                title: {text: null },
+
+                xAxis: {
+                    categories: {{ dates|safe }},
+                    tickmarkPlacement:'on',
+                    title: { text:'7日阅读数据'}
+                },
+
+                yAxis: {
+                    title: { text: null },
+                    labels:{ enabled: false },
+                    gridLineDashStyle: 'Dash'
+                },
+
+                series: [{                              // 数据列
+                    name: '阅读量',                        // 数据列名
+                    data: {{ read_nums }} ,
+                    dataLabels: {enabled: true},              // 数据
+                }, ],
+
+                legend: { enabled: false},
+                credits: { enabled: false},
+            };
+            // 图表初始化函数
+            var chart = Highcharts.chart('container', options);
+        </script>
+    <div class="hot-data">
+        <h3>今日热门点击</h3>
+        {% for read_detail in today_hot_data %}
+            <li><a href="{% url 'blog_detail' read_detail.content_object.pk %}">
+                {{ read_detail.content_object.title }}
+            </a>
+            ({{ read_detail.read_num }})
+            </li>
+        {% empty %}
+            今日暂无
+        {% endfor %}
+        <h3>昨日热门点击</h3>
+        {% for read_detail in yesterday_hot_data %}
+            <li><a href="{% url 'blog_detail' read_detail.content_object.pk %}">
+                {{ read_detail.content_object.title }}
+            </a>
+            ({{ read_detail.read_num }})
+            </li>
+        {% empty %}
+            昨日暂无
+        {% endfor %}
+        <h3>7天热门点击</h3>
+        {% for blog in hot_data_for_7_days %}
+            <li><a href="{% url 'blog_detail' blog.pk %}">
+                {{ blog.title }}
+            </a>
+            ({{ blog.read_num_sum }})
+            </li>
+        {% empty %}
+            暂无
+        {% endfor %}
+    </div>
+{% endblock %}
