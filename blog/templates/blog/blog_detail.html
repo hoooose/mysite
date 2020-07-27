@@ -9,9 +9,12 @@
 {% endblock %}
 
 {% block header_extend %}
-    <link rel="stylesheet" type="text/css" href="{% static 'blog\blog-type.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'blog/blog-type.css' %}">
     <script type="text/javascript" src="{% static 'ckeditor/ckeditor-init.js' %}"></script>
     <script type="text/javascript" src="{% static 'ckeditor/ckeditor/ckeditor.js'%}"></script>
+    <link href="{% static 'highlight/styles/zenburn.css' %}" rel="stylesheet" media="screen" type="text/css" ></link>
+    <script type="text/javascript" src="{% static 'highlight/highlight.pack.js' %}"></script>
+    <script type="text/javascript">hljs.initHighlightingOnLoad();</script> 
 {% endblock %}
 
 {#页面内容#}
